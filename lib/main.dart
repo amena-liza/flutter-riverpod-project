@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_files/screens/home/home_screen.dart';
+import 'package:riverpod_files/screens/home/recipe_details_display.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -17,7 +17,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       ),
-      home: const HomeScreen(),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Example')),
+        body: const Center(
+          child: RecipeDetailsDisplay(), // RecipeDisplay
+        ),
+      ),
     );
   }
 }

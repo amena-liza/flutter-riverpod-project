@@ -6,6 +6,38 @@ part of 'products_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$priceHash() => r'd3583ef325a413d1976bf257b9186c653b49df94';
+
+/// See also [price].
+@ProviderFor(price)
+final priceProvider = AutoDisposeProvider<int>.internal(
+  price,
+  name: r'priceProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$priceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef PriceRef = AutoDisposeProviderRef<int>;
+String _$productHash() => r'6119cd4b279bcb6667978a0a45b319b75afea296';
+
+/// See also [product].
+@ProviderFor(product)
+final productProvider = AutoDisposeProvider<Product>.internal(
+  product,
+  name: r'productProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$productHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ProductRef = AutoDisposeProviderRef<Product>;
 String _$productsHash() => r'48c888b003496256deeeaee20811324bf5f8ab85';
 
 /// See also [products].

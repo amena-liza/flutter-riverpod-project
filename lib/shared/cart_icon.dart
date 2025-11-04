@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod_files/screens/cart/cart_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_files/screens/cart/cart_screen.dart';
 
 class CartIcon extends ConsumerWidget {
   final int cartItemLength;
 
   const CartIcon({required this.cartItemLength, super.key});
 
-@override
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
       children: [

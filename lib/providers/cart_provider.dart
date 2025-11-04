@@ -35,14 +35,14 @@ int cartTotal(ref) {
 
   return total;
 }
-
+//
 // class CartNotifier extends Notifier<Set<Product>> {
 //   @override
-  // Set<Product> build() {
-  //   return {};
-  // }
+//   Set<Product> build() {
+//     return {};
+//   }
 // }
-
+//
 // final cartNotifierProvider = NotifierProvider<CartNotifier, Set<Product>>(() {
 //   return CartNotifier();
 // });
