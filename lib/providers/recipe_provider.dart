@@ -74,3 +74,27 @@ final moviesProvider = Provider<List<String>>((ref) {
     'Movie 3',
   ];
 });
+
+// --------- Example of Recipe Providers without CodeGeneration ---------
+
+// FutureProvider — For async operations (like API calls)
+//
+// 💬 “I need to fetch data once asynchronously and display it in the UI.”
+//
+// Example: Fetch recipes from API
+// Use this when data is fetched once and you don’t manually update it.
+
+/*final recipesProvider = FutureProvider<List<Recipe>>((ref) async {
+  final dio = ref.read(dioProvider);
+  final response = await dio.get('/recipes');
+  return (response.data as List).map((e) => Recipe.fromJson(e)).toList();
+});*/
+
+// Usage in UI:
+
+/*final recipesAsync = ref.watch(recipesProvider);
+return recipesAsync.when(
+  loading: () => const CircularProgressIndicator(),
+  error: (e, _) => Text('Error: $e'),
+  data: (recipes) => RecipeListView(recipes: recipes),
+);*/
