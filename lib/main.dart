@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_files/screens/home/recipe_details_display.dart';
+
+import 'code_with_andre/features/hello_world/view/hello_world_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -19,8 +20,9 @@ class MyApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(title: const Text('Example')),
-        body: const Center(
-          child: RecipeDetailsDisplay(), // RecipeDisplay
+        body: Center(
+          // child: RecipeDetailsDisplay(), // RecipeDisplay
+          child: HelloWorldWidget(), // RecipeDisplay
         ),
       ),
     );
