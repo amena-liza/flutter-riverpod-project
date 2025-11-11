@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'code_with_andre/features/hello_world/view/hello_world_page.dart';
+import 'code_with_andre/features/state_provider/counter/view/counter_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(title: const Text('Example')),
         body: Center(
           // child: RecipeDetailsDisplay(), // RecipeDisplay
-          child: HelloWorldWidget(), // RecipeDisplay
+          child: CounterPage(), // RecipeDisplay
         ),
       ),
     );

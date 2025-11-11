@@ -14,6 +14,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_files/code_with_andre/features/provider/hello_world/riverpod/hello_world_provider.dart';
 
 class HelloWorld extends ConsumerWidget {
   @override
@@ -136,8 +137,6 @@ class _HelloWorldWidgetState extends ConsumerState<HelloWorldWidgetFour> {
 //
 // When we subclass from ConsumerState, we can access the ref object inside all the widget lifecycle methods. This is because ConsumerState declares WidgetRef as a property, much like the Flutter State class declares BuildContext as a property that can be accessed directly inside all the widget lifecycle methods.
 //
-// If you use the hooks_riverpod package, you can also use HookConsumerWidget and StatefulHookConsumerWidget. The official documentation covers these widgets in more detail.
-//
 // What is a WidgetRef?
 // As we have seen, we can watch a provider's value by using a ref object of type WidgetRef. This is available as an argument when we use Consumer or ConsumerWidget, and as a property when we subclass from ConsumerState.
 //
@@ -150,3 +149,17 @@ class _HelloWorldWidgetState extends ConsumerState<HelloWorldWidgetFour> {
 // In other words, WidgetRef lets us access any provider in our codebase (as long as we import the corresponding file). This is by design because all Riverpod providers are global.
 //
 // This is significant because keeping application state and logic inside our widgets leads to poor separation of concerns. Moving it inside our providers makes our code more testable and maintainable. 👍
+
+// Provider is great for accessing dependencies and objects that don’t change.
+// You may use this to access a repository, a logger, or some other class that doesn't contain mutable state.
+// For example, here's a provider that returns a DateFormat:
+
+class DateTextViewer extends ConsumerWidget {
+  const DateTextViewer({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formatter = ref.watch(dateTimeFormaterProvider);
+    return Text(formatter.format(DateTime.now()));
+  }
+}

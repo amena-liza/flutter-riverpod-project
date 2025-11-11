@@ -47,5 +47,14 @@ final sateFulPriceProvider = StateProvider<int>((ref) => 100);
 // Use StateProvider → simple mutable value (int, String, bool, etc.).
 // Use StateNotifierProvider or NotifierProvider → for more complex state logic (objects, lists, multiple operations).
 
+# 8 different kind of providers:
 
+Provider
+            StateProvider (legacy)
+            StateNotifierProvider (legacy)
+FutureProvider
+StreamProvider
+            ChangeNotifierProvider (legacy)
+NotifierProvider (new in Riverpod 2.0)
+AsyncNotifierProvider (new in Riverpod 2.0)
 
