@@ -19,3 +19,10 @@
 final authControllerProvider = ChangeNotifierProvider<AuthController>((ref) {
   return AuthController();
 });*/
+
+// The ChangeNotifier API makes it easy to break two important rules: immutable state and unidirectional data flow.
+//
+// As a result, ChangeNotifier is discouraged, and we should use StateNotifier instead.
+//
+// When used incorrectly, ChangeNotifier leads to mutable state and makes our code harder to maintain. StateNotifier gives us a simple API for dealing with immutable state. For a more in-depth overview, read: Flutter State Management: Going from setState to Freezed & StateNotifier with Provider
+//

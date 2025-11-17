@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'code_with_andre/features/future_provider/product_app/view/product_page.dart';
+import 'code_with_andre/features/async_notifier_provider/clock/view/clock_async_notifier_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -24,7 +24,9 @@ class MyApp extends StatelessWidget {
           // child: RecipeDetailsDisplay(), // RecipeDisplay
           // child: CounterPage(), // RecipeDisplay
           // child: ClockPage(), // RecipeDisplay
-          child: ProductPage(), // RecipeDisplay
+          // child: ProductPage(), // RecipeDisplay
+          // child: CounterNotifierPage(), // RecipeDisplay
+          child: ClockAsyncNotifierPage(), // RecipeDisplay
         ),
       ),
     );
