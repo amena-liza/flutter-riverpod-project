@@ -17,44 +17,48 @@ samples, guidance on mobile development, and a full API reference.
 
 
 
-#Rule of Thumb
+#To-Do
 
-``
-// Here the priceProvider is readOnly; It's value is fixed and can't change directly
+If you want, I can also show:
 
-final priceProvider = Provider<int>((ref) => 100);
-
-// With reverpod annotation the above line can be written as below as well:
-
-@riverpod
-int price(ref) {
-return 100;
-}
+✅ Real-world example with pagination
+✅ AsyncNotifier + debounce + search
+✅ How to keep cache alive with keepAlive: true
+✅ How to handle AsyncValue.guard() for safer try/catch
 
 
-final sateFulPriceProvider = StateProvider<int>((ref) => 100);
+If you want, I can show you:
+
+🔥 Example with pagination
+🔥 Example with search + debounce
+🔥 Example with stale UI while background refreshing
 
 
+If you want, I can show:
 
-``
+🔥 Example of AsyncValue with nested “refreshing" or “updating” states
+🔥 Example of background loaders + maybeWhen
+🔥 Example where .isLoading fails but maybeWhen works
+
+Which one would you like?
+
+Learn **ref.listenManual(usersProvider, (_, __) {});**
 
 
+This is why .maybeWhen is more reliable and used in professional Riverpod codebases.
 
-[//]: # (How this same price update would look using the new @riverpod code generation style &#40;instead of StateProvider&#41;?)
+If you want, I can also show:
+📘 A full example with pull-to-refresh
+📘 A pagination example where .isLoading fails
+📘 An approach combining .maybeWhen with optimistic updates
+
+Just tell me
 
 
-// Use Provider → fixed value, no updates.
-// Use StateProvider → simple mutable value (int, String, bool, etc.).
-// Use StateNotifierProvider or NotifierProvider → for more complex state logic (objects, lists, multiple operations).
+✔ a silent background refresh version
+✔ a version with pull-to-refresh
+✔ a version that shows only a small top refresh indicator instead of center loader
 
-# 8 different kind of providers:
+Just tell me!
 
-Provider
-            StateProvider (legacy)
-            StateNotifierProvider (legacy)
-FutureProvider
-StreamProvider
-            ChangeNotifierProvider (legacy)
-NotifierProvider (new in Riverpod 2.0)
-AsyncNotifierProvider (new in Riverpod 2.0)
 
