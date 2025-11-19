@@ -674,13 +674,9 @@ Outer state is not replaced
 AsyncValue.guard() is used for background/partial updates, e.g.:
 
 Adding an item
-
 Editing a profile
-
 Refreshing only part of the screen
-
 Fetching new data while keeping old data
-
 Avoiding UI flicker
 
 In all these cases:

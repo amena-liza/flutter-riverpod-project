@@ -1,0 +1,210 @@
+# AsyncValue - Visual Mental Model
+AsyncValue<T> is a sealed class that represents the state of an async operation in Riverpod.
+
+It has exactly 3 sub-classes:
+AsyncLoading<T>
+AsyncData<T>
+AsyncError<T>
+
+So when you see:
+AsyncValue<List<Recipe>> recipes
+
+It means:
+
+**“recipes can be loading, or data, or error.
+All in ONE variable.”**
+
+This is why Riverpod makes async state so clean.
+
+Think of AsyncValue<T> like a box that can hold one of three shapes:
+
+      AsyncValue<T>
+     /      |      \
+    /       |       \
+AsyncLoading  AsyncData  AsyncError
+
+All reachable through a single variable.
+
+AsyncValue<T> → the main container (“the wrapper”)
+AsyncLoading<T> → the loading state
+AsyncData<T> → the success state
+AsyncError<T> → the error state
+AsyncValue.loading() → factory that returns AsyncLoading()
+AsyncValue.data() → factory that returns AsyncData()
+AsyncValue.error() → factory that returns AsyncError()
+All constructors represent the same thing, just different syntax.
+
+
+What is AsyncLoading()?
+This represents:
+“The async operation is loading.”
+
+Equivalent to:
+
+AsyncValue<List<Recipe>> value = const AsyncLoading();
+
+Or written in the factory style:
+
+AsyncValue<List<Recipe>> value = const AsyncValue.loading();
+
+Both create an AsyncLoading.
+🔹 These are the same:
+const AsyncValue.loading();
+const AsyncLoading();
+
+✔ 3. What is AsyncData()?
+Represents the success state.
+
+AsyncValue<List<Recipe>> value = AsyncData(["A", "B", "C"]);
+Or:
+AsyncValue.data([...]);
+Both create the data state.
+
+✔ 4. What is AsyncError()?
+Represents the error state.
+AsyncValue.error(err, stack);
+
+Or:
+
+AsyncError(err, stack);
+
+📌 Summary of all constructors
+Factory constructor	        Real class instance	    Meaning
+AsyncValue.loading()	    AsyncLoading()	        Loading
+AsyncValue.data(data)	    AsyncData(data)	        Success
+AsyncValue.error(err, st)	AsyncError(err, st)	    Error
+
+They are identical — Riverpod just gives both styles.
+
+🟩 5. Why use them?
+✔ Store async results cleanly
+
+Example:
+state = const AsyncValue.loading();
+state = AsyncValue.data(recipes);
+state = AsyncValue.error(e, st);
+
+✔ No need for separate variables
+
+You don’t need:
+bool isLoading
+bool hasError
+String? errorMessage
+List<Recipe> data
+All are in one type.
+
+🟦 6. So why you saw code like this?
+Example:
+this.recipes = const AsyncValue.loading();
+
+This simply initializes the RecipesState to loading.
+
+Instead of:
+this.recipes = const AsyncLoading();
+
+Both result in:
+AsyncLoading<List<Recipe>>
+
+They are just different constructor styles.
+
+🟣 7. Example of state update:
+Add new item to list:
+state = AsyncData([
+...state.valueOrNull ?? [],
+newRecipe,
+]);
+
+Here:
+
+AsyncData() = success container
+valueOrNull = underlying data
+spreading adds new items
+
+
+# We use:
+
+✔ AsyncValue.data(...)
+when Dart can infer the type from the value.
+
+We use:
+✔ AsyncValue<List<Recipe>>.error(...)
+
+when Dart cannot infer the type, because the error constructor has no T parameter.
+Both are correct — one simply needs the type annotation and the other does not.
+
+You can write either:
+AsyncValue.data(...)
+or
+AsyncValue<List<Recipe>>.data(...)
+
+They are identical in functionality.
+✔ Both produce an AsyncData<List<Recipe>>
+✔ Riverpod infers the generic type automatically in most situations
+✔ You only need the generic (<List<Recipe>>) when Dart cannot infer it
+
+This is why sometimes you see it written with generic, sometimes without.
+🧠 Why AsyncValue.data usually does NOT need generics
+
+In your success branch:
+``recipes: AsyncValue.data(
+    refresh ? data : [...currentRecipes, ...data],
+),``
+
+Dart sees that this is assigned into:
+AsyncValue<List<Recipe>>
+
+So it can automatically infer:
+The type of data is List<Recipe>
+Therefore the AsyncValue inside must also be AsyncValue<List<Recipe>>
+
+So you don’t need:
+
+AsyncValue<List<Recipe>>.data
+
+
+Dart knows it.
+
+🔥 But why DO we need generics in AsyncValue.error?
+
+Because error constructors need a generic argument.
+Look at the signature:
+
+AsyncValue.error(Object error, StackTrace stackTrace)
+
+
+Notice:
+➡ It does NOT include T anywhere
+➡ Dart cannot know what the success type (T) is
+➡ So you MUST specify it manually:
+
+AsyncValue<List<Recipe>>.error(error, StackTrace.current)
+
+
+Otherwise Riverpod/Dart cannot guess that this error belongs to an AsyncValue<List<Recipe>>.
+
+📌 Why success can infer type automatically, but error cannot?
+
+Let’s break it down:
+
+✔ Success constructor includes the value
+AsyncValue.data(T value)
+So Dart can infer T from the value.
+
+❌ Error constructor does NOT include T
+AsyncValue.error(Object error, StackTrace stackTrace)
+No type inside → no way to guess T.
+
+📘 Summary Table
+Constructor	                                Needs Generic?	                    Why?
+AsyncValue.data(data)	                    ❌ No	                            Dart infers T from data
+AsyncValue<List<Recipe>>.data(data)	        ✔ Optional	                        Explicit, but not needed
+AsyncValue.error(err, st)	                ❌ No, but then T becomes dynamic	Not desired
+AsyncValue<List<Recipe>>.error(err, st)	    ✔ YES	                            Dart cannot infer T
+👀 Example showing the difference
+✅ This works:
+AsyncValue.data(<Recipe>[]);
+
+❌ But this does NOT work:
+AsyncValue.error("err", st);
+
+Because Dart cannot know what type of AsyncValue<T> is being created.
