@@ -439,4 +439,265 @@ final state = container.read(myNotifierProvider);
 expect(state.value, isNotEmpty);
 });
 
+# Why is state = const AsyncValue.loading() needed in refresh, add, or update function inside AsyncNotifier?
+Short answer:
+
+Yes, you can rely only on:
+
+state = await AsyncValue.guard(() => api.fetchRecipes());
+
+
+BUT if you remove the explicit state = const AsyncValue.loading() you will not see the loading indicator when refreshing if the previous state was data.
+
+✅ Why? (Important concept)
+
+AsyncValue.guard() does not set the state to loading before running.
+Instead, it:
+
+Runs your function (fetchRecipes)
+
+If it succeeds → returns AsyncValue.data(...)
+
+If it fails → returns AsyncValue.error(...)
+
+It does NOT put the state into loading first.
+
+That means during the API call, the UI still sees the previous data state, not loading.
+
+So this UI:
+
+async.maybeWhen(
+loading: () => true,
+orElse: () => false,
+);
+
+
+👉 will NOT return true, because the state is still AsyncValue.data.
+
+Result:
+❌ Loader not shown during refresh
+❌ The user won't feel like a refresh is happening
+❌ Not the correct UX
+
+✅ So what does state = const AsyncValue.loading() do?
+
+It immediately tells the UI:
+
+I am loading now — show the loader!
+
+Before running the async call.
+
+Then after fetch completes:
+
+state = await AsyncValue.guard(...);
+
+
+updates the UI with the new data (or error).
+
+⭐ Recommended Pattern (Official Riverpod docs)
+Future<void> refresh() async {
+// Set loading state (keeps previous data if needed)
+state = const AsyncValue.loading();
+
+// Run API call safely
+state = await AsyncValue.guard(() => api.fetchRecipes());
+}
+
+
+This ensures:
+
+UI shows loading immediately
+
+Avoids stale visuals
+
+Guarantees correct behavior in your maybeWhen
+
+🔥 If you want to keep old data during refresh
+
+Riverpod gives another pattern:
+
+Future<void> refresh() async {
+state = AsyncValue.data(state.value ?? []).copyWith(isLoading: true);
+
+state = await AsyncValue.guard(() async {
+final recipes = await api.fetchRecipes();
+return recipes;
+});
+}
+
+
+But your current approach is simpler.
+
+🧠 Final Answer
+❓ “If I use maybeWhen loading, won’t the loader show?”
+
+➡️ No. Not unless you set state = AsyncValue.loading() manually.
+
+❓ “Can I remove the first line?”
+
+➡️ You can, but then no loading indicator shows during refresh.
+
+So in real apps:
+✔ Keep the explicit loading state
+✔ This gives proper UX
+✔ Matches the official Riverpod usage
+
+If you want, I can show you:
+
+✅ A version that keeps previous data visible during refresh
+or
+✅ A version that supports pull-to-refresh
+or
+✅ A full UI + provider example using AsyncNotifier
+
+Just tell me!
+
+✅ Keep Previous Data While Refreshing (No Flicker / No Empty UI)
+
+To keep old data visible while fetching new data, you must NOT replace the state with a pure loading state.
+
+Instead, use:
+
+state = const AsyncValue.loading().copyWithPrevious(state);
+state = await AsyncValue.guard(() => api.fetchRecipes());
+
+
+This shows a loader but preserves the old data in the UI.
+
+✅ Updated Notifier
+class RecipesNotifier extends AsyncNotifier<List<Recipe>> {
+@override
+Future<List<Recipe>> build() async {
+return await api.fetchRecipes();
+}
+
+Future<void> refresh() async {
+// 1. Keep old data + show loading
+state = const AsyncValue.loading().copyWithPrevious(state);
+
+    // 2. Fetch new data (will replace state once finished)
+    state = await AsyncValue.guard(
+      () => api.fetchRecipes(),
+    );
+}
+}
+
+final recipesNotifierProvider =
+AsyncNotifierProvider<RecipesNotifier, List<Recipe>>(RecipesNotifier.new);
+
+❓ Why not this?
+state = const AsyncValue.loading();
+
+
+Because it removes previous data → UI becomes empty → then refills later.
+This causes flicker or a full-page loader.
+
+❓ Why assign state twice?
+
+First assignment:
+AsyncValue.loading().copyWithPrevious(state)
+→ old data on screen + small loading indicator overlay.
+
+Second assignment:
+AsyncValue.guard(...)
+→ replaces with fresh data (or error).
+
+This is the recommended pattern in Riverpod.
+
+📌 UI Example (overlay spinner)
+final async = ref.watch(recipesNotifierProvider);
+
+final isRefreshing = async.isRefreshing; // ← built-in helper
+
+return Stack(
+children: [
+RecipesList(async.value ?? []),
+
+    if (isRefreshing)
+      const Center(child: CircularProgressIndicator()),
+],
+);
+
+built-in isRefreshing works automatically when you use copyWithPrevious.
+✅ Summary
+Goal	Correct Approach
+Show loader without hiding old data	loading().copyWithPrevious(state)
+Avoid flicker	Don’t use state = AsyncValue.loading()
+Show refresh spinner	async.isRefreshing
+
+If you want, I can also show you:
+✅ how to build pull-to-refresh
+✅ infinite pagination with AsyncNotifier
+✅ retry-on-error patterns
+
+
+#
+✅ 1. When to use maybeWhen
+Use maybeWhen when you want to react to specific AsyncValue states and run custom UI logic.
+
+Example:
+
+final async = ref.watch(recipesProvider);
+
+final isRefreshing = async.maybeWhen(
+loading: () => true,
+orElse: () => false,
+);
+
+
+Here, you’re not checking if it's "refreshing" — you're simply checking:
+
+Is the current state exactly loading?
+→ Then show the loader.
+
+You use this when your UI needs to behave differently depending on the exact state (loading, error, data).
+
+✅ 2. When to use .copyWithPrevious() and async.isRefreshing
+Use .copyWithPrevious() when you want a smooth UI refresh experience (keep previous data visible).
+
+Example:
+
+state = AsyncValue.loading().copyWithPrevious(state);
+
+
+This gives you:
+
+async.isRefreshing == true
+
+old data still visible
+
+UI does not lose the previous result
+
+This pattern is perfect for pull-to-refresh, pagination, or silent background refresh.
+
+And now your UI can simply do:
+
+if (async.isRefreshing) showLoader();
+
+
+No need for maybeWhen in this case.
+
+📌 So when exactly do you use which one?
+Situation	Use .isRefreshing (copyWithPrevious)	Use maybeWhen
+Pull-to-refresh while keeping old data	✅ Yes	❌ Not necessary
+Background refresh	✅ Yes	❌
+Need to detect exact state (loading/error/data)	❌	✅ Yes
+Show full screen loader on first load	❌	✅ Yes
+Show small refreshing spinner over list	✅ Yes	❌
+Custom logic only for error state	❌	✅ Yes
+🔍 Why both exist?
+
+maybeWhen = State pattern matching (switching UI based on different states).
+
+.copyWithPrevious() = State structure control (keeping old data + adding refreshing metadata).
+
+They serve different roles.
+
+🎯 Simple Rule of Thumb
+Refreshing old data? → Use .isRefreshing
+Checking exact state? → Use maybeWhen
+
+If you want, I can provide a clean recommended pattern for your RecipesNotifier + UI.
+
+
 
