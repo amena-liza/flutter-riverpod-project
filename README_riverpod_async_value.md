@@ -678,13 +678,13 @@ if (async.isRefreshing) showLoader();
 No need for maybeWhen in this case.
 
 📌 So when exactly do you use which one?
-Situation	Use .isRefreshing (copyWithPrevious)	Use maybeWhen
-Pull-to-refresh while keeping old data	✅ Yes	❌ Not necessary
-Background refresh	✅ Yes	❌
-Need to detect exact state (loading/error/data)	❌	✅ Yes
-Show full screen loader on first load	❌	✅ Yes
-Show small refreshing spinner over list	✅ Yes	❌
-Custom logic only for error state	❌	✅ Yes
+Situation	                                      Use .isRefreshing (copyWithPrevious)	Use maybeWhen
+Pull-to-refresh while keeping old data	          ✅ Yes	                            ❌ Not necessary
+Background refresh	                              ✅ Yes	                            ❌
+Need to detect exact state (loading/error/data)	  ❌	                                ✅ Yes
+Show full screen loader on first load	          ❌	                                ✅ Yes
+Show small refreshing spinner over list	          ✅ Yes	                            ❌
+Custom logic only for error state	              ❌	                                ✅ Yes
 🔍 Why both exist?
 
 maybeWhen = State pattern matching (switching UI based on different states).

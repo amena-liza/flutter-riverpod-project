@@ -72,9 +72,9 @@ final counterProvider = NotifierProvider<Counter, int>(() => Counter());
 
 Because the constructor is different:
 
-NotifierProvider<TNotifier extends Notifier<T>, T>(
+**NotifierProvider<TNotifier extends Notifier<T>, T>(
 TNotifier Function() createNotifier
-)
+)**
 
 
 So the function does not receive any arguments.
