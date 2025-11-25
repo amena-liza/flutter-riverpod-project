@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'code_with_andre/features/test/view/page.dart';
+import 'asyncvalue_practice/asyncvalue_practice.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
           // child: ProductPage(), // RecipeDisplay
           // child: CounterNotifierPage(), // RecipeDisplay
           // child: ClockAsyncNotifierPage(), // RecipeDisplay
-          child: HelloWorldTest(), // RecipeDisplay
+          // child: HomeView(), // RecipeDisplay
+          // child: FirstRiverpodAppPage(), // RecipeDisplay
+          child: AsyncValuePractice(), // RecipeDisplay
         ),
       ),
     );
