@@ -32,6 +32,9 @@ class AsyncValuePracticeState extends ConsumerState<AsyncValuePractice> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('pop')),
               _InfoRow(
                 label: 'Type',
                 content: asyncValue.runtimeType.toString(),

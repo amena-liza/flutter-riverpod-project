@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           // child: FirstRiverpodAppPage(), // RecipeDisplay
           // child: AsyncValuePractice(), // RecipeDisplay
           // child: FunctionGeneratorPage(), // RecipeDisplay
-          child: ClassGeneratorPage(), // RecipeDisplay
+          child: ClassGeneratorPage(pageNo: 1), // RecipeDisplay
         ),
       ),
     );
