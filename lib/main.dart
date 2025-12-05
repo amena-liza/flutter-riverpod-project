@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'asyncvalue_practice/asyncvalue_practice.dart';
+import 'code_with_andre/features/generator/generator_from_class/view/class_generator_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -29,7 +29,9 @@ class MyApp extends StatelessWidget {
           // child: ClockAsyncNotifierPage(), // RecipeDisplay
           // child: HomeView(), // RecipeDisplay
           // child: FirstRiverpodAppPage(), // RecipeDisplay
-          child: AsyncValuePractice(), // RecipeDisplay
+          // child: AsyncValuePractice(), // RecipeDisplay
+          // child: FunctionGeneratorPage(), // RecipeDisplay
+          child: ClassGeneratorPage(), // RecipeDisplay
         ),
       ),
     );

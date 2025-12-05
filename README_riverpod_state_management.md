@@ -235,3 +235,15 @@ Favorites toggle (local only)	Notifier	Sync UI action
 Favorites toggle (API call)	AsyncNotifier	Network involved
 
 
+# The .notifier syntax is available with StateProvider and StateNotifierProvider only and works as follows:
+
+call ref.read(provider.notifier) on a StateProvider<T> to return the underlying StateController<T> that we can use to modify the state
+call ref.read(provider.notifier) on a StateNotifierProvider<T> to return the underlying StateNotifier<T> so we can call methods on it
+
+# 
+** ref.listen() gives us a callback that executes when the provider value changes, not when the build method is called. Hence we can use it to run any asynchronous code (such as showing a dialog), just like we do inside button callbacks. For more info about running asynchronous code inside Flutter widgets, read my article about side effects in Flutter.
+
+In addition to watch, read, and listen, Riverpod 2.0 introduced new methods that we can use to explicitly refresh or invalidate a provider. I will cover them in a separate article.
+
+
+

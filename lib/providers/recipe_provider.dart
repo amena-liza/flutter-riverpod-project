@@ -45,6 +45,13 @@ class Cart extends _$Cart {
   }
 }
 
+@riverpod
+FutureOr<Map<String, dynamic>> recipeDetails(ref, recipeId) async {
+  final response =
+      await http.get(Uri.parse('https://dummyjson.com/recipes/$recipeId'));
+  return jsonDecode(response.body);
+}
+
 // End riverpodGeneratorNotifierProvider
 
 // Start: riverpodGeneratorAsyncNotifierProvider

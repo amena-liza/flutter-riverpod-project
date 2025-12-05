@@ -39,21 +39,7 @@ final getRecipesProvider = AutoDisposeFutureProvider<List<dynamic>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetRecipesRef = AutoDisposeFutureProviderRef<List<dynamic>>;
-String _$cartHash() => r'2c38f1aad9a3e43e8b1a548d7fcfc1804abbdf05';
-
-/// See also [Cart].
-@ProviderFor(Cart)
-final cartProvider = AutoDisposeNotifierProvider<Cart, List<int>>.internal(
-  Cart.new,
-  name: r'cartProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$cartHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Cart = AutoDisposeNotifier<List<int>>;
-String _$recipeDetailsHash() => r'6f678dc53cdad8e8f4f653980b3f8b3685f270b0';
+String _$recipeDetailsHash() => r'363cd1c1855c7ccc5457e63fb89cd11d0bdd4fbf';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -75,6 +61,152 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [recipeDetails].
+@ProviderFor(recipeDetails)
+const recipeDetailsProvider = RecipeDetailsFamily();
+
+/// See also [recipeDetails].
+class RecipeDetailsFamily extends Family<AsyncValue<Map<String, dynamic>>> {
+  /// See also [recipeDetails].
+  const RecipeDetailsFamily();
+
+  /// See also [recipeDetails].
+  RecipeDetailsProvider call(
+    dynamic recipeId,
+  ) {
+    return RecipeDetailsProvider(
+      recipeId,
+    );
+  }
+
+  @override
+  RecipeDetailsProvider getProviderOverride(
+    covariant RecipeDetailsProvider provider,
+  ) {
+    return call(
+      provider.recipeId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'recipeDetailsProvider';
+}
+
+/// See also [recipeDetails].
+class RecipeDetailsProvider
+    extends AutoDisposeFutureProvider<Map<String, dynamic>> {
+  /// See also [recipeDetails].
+  RecipeDetailsProvider(
+    dynamic recipeId,
+  ) : this._internal(
+          (ref) => recipeDetails(
+            ref as RecipeDetailsRef,
+            recipeId,
+          ),
+          from: recipeDetailsProvider,
+          name: r'recipeDetailsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$recipeDetailsHash,
+          dependencies: RecipeDetailsFamily._dependencies,
+          allTransitiveDependencies:
+              RecipeDetailsFamily._allTransitiveDependencies,
+          recipeId: recipeId,
+        );
+
+  RecipeDetailsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.recipeId,
+  }) : super.internal();
+
+  final dynamic recipeId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Map<String, dynamic>> Function(RecipeDetailsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RecipeDetailsProvider._internal(
+        (ref) => create(ref as RecipeDetailsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        recipeId: recipeId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Map<String, dynamic>> createElement() {
+    return _RecipeDetailsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RecipeDetailsProvider && other.recipeId == recipeId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, recipeId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin RecipeDetailsRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
+  /// The parameter `recipeId` of this provider.
+  dynamic get recipeId;
+}
+
+class _RecipeDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<Map<String, dynamic>>
+    with RecipeDetailsRef {
+  _RecipeDetailsProviderElement(super.provider);
+
+  @override
+  dynamic get recipeId => (origin as RecipeDetailsProvider).recipeId;
+}
+
+String _$cartHash() => r'2c38f1aad9a3e43e8b1a548d7fcfc1804abbdf05';
+
+/// See also [Cart].
+@ProviderFor(Cart)
+final cartProvider = AutoDisposeNotifierProvider<Cart, List<int>>.internal(
+  Cart.new,
+  name: r'cartProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$cartHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Cart = AutoDisposeNotifier<List<int>>;
+String _$recipeDetailsHash() => r'6f678dc53cdad8e8f4f653980b3f8b3685f270b0';
 
 abstract class _$RecipeDetails
     extends BuildlessAutoDisposeAsyncNotifier<Map<String, dynamic>> {
