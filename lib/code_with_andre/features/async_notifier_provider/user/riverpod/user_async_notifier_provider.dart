@@ -8,7 +8,7 @@ class UsersNotifier extends AsyncNotifier<List<String>> {
   }
 
   Future<List<String>> fetchUsers() async {
-    await Future.delayed(Duration(seconds: 2)); // simulate API delay
+    await Future.delayed(const Duration(seconds: 2)); // simulate API delay
     return ["Alice", "Bob", "Charlie"];
   }
 

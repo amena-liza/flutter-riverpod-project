@@ -118,6 +118,11 @@ AuthRepository authRepository() {
   return AuthRepository();
 }
 
+final authControllerProvider =
+    StateNotifierProvider<AuthController, AsyncValue<void>>((ref) {
+  return AuthController(ref);
+});
+
 class AuthController extends StateNotifier<AsyncValue<void>> {
   AuthController(this.ref)
       // set the initial state (synchronously)
@@ -134,7 +139,7 @@ class AuthController extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-final authControllerProvider =
+final authControllerProviderTwo =
     AsyncNotifierProvider.autoDispose<AuthControllerTwo, FutureOr<void>>(
         AuthControllerTwo.new);
 
@@ -172,6 +177,26 @@ class AuthControllerThree extends _$AuthControllerThree {
   }
 }
 
+final authControllerFourV2Provider =
+    AutoDisposeAsyncNotifierProvider<AuthControllerFour, FutureOr<void>>(
+        AuthControllerFour.new);
+
+class AuthControllerFour extends AutoDisposeAsyncNotifier<FutureOr<void>> {
+  @override
+  FutureOr<void> build() {
+    return null;
+  }
+
+  Future<void> signInAnonymously() async {
+    // read the repository using ref
+    final authRepository = ref.read(authRepositoryProvider);
+    // set the loading state
+    state = const AsyncLoading();
+    // sign in and update the state (data or error)
+    state = await AsyncValue.guard(authRepository.signInAnonymously);
+  }
+}
+
 class CounterNotifier extends AsyncNotifier<int> {
   @override
   Future<int> build() async {
@@ -180,7 +205,7 @@ class CounterNotifier extends AsyncNotifier<int> {
 
   Future<void> increment() async {
     state = const AsyncLoading(); // <--- This is the case you’re asking about
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     state = AsyncData(state.value! + 1);
   }
 }
