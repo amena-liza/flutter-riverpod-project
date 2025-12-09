@@ -23,6 +23,8 @@ final sateFulPriceProvider = StateProvider<int>((ref) => 100);
 // Use StateProvider → simple mutable value (int, String, bool, etc.).
 // Use StateNotifierProvider or NotifierProvider → for more complex state logic (objects, lists, multiple operations).
 
+![img_7.png](img_7.png)
+
 # 8 different kind of providers:
 
 Provider
